@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Menu racine -->
+    <menuitem id="menu_tplb_bateau_root"
+              name="Bateaux"
+              web_icon="tplb_bateau,static/description/icon.png"
+              sequence="100"/>
+
+    <!-- Menu des bateaux -->
+    <menuitem id="menu_tplb_bateau_list"
+              name="Bateaux"
+              parent="menu_tplb_bateau_root"
+              action="action_tplb_bateau"
+              sequence="10"/>
+
+    <!-- Menu des clients (redirection vers les partenaires) -->
+    <menuitem id="menu_tplb_bateau_clients"
+              name="Clients"
+              parent="menu_tplb_bateau_root"
+              action="base.action_partner_form"
+              sequence="20"/>
+</odoo>

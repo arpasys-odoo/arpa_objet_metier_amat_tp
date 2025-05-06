@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire pour les bateaux -->
+    <record id="view_tplb_bateau_form" model="ir.ui.view">
+        <field name="name">tplb.bateau.form</field>
+        <field name="model">tplb.bateau</field>
+        <field name="arch" type="xml">
+            <form string="Bateau">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Nom du bateau"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group string="Informations générales">
+                            <field name="partner_id" options="{'no_create': True}"/>
+                            <field name="marque"/>
+                            <field name="modele"/>
+                            <field name="numero_coque"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="active" invisible="1"/>
+                        </group>
+                        <group string="Dimensions">
+                            <field name="longueur" widget="float"/>
+                            <field name="largeur" widget="float"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group string="Propulsion">
+                            <field name="type_propulsion" widget="radio"/>
+                            <field name="type_moteur" widget="radio"/>
+                            <field name="nombre_moteurs"/>
+                        </group>
+                        <group string="Emplacement">
+                            <field name="nom_port"/>
+                            <field name="numero_place"/>
+                        </group>
+                    </group>
+
+                    <notebook>
+                        <page string="Moteurs" name="motors">
+                            <group>
+                                <group string="Informations moteur principal">
+                                    <field name="marque_moteur"/>
+                                    <field name="modele_moteur"/>
+                                    <field name="numero_serie_moteur"/>
+                                </group>
+                                <group string="Moteurs supplémentaires" attrs="{'invisible': [('nombre_moteurs', '&lt;=', 1)]}">
+                                    <field name="numero_serie_moteur_babord"
+                                           attrs="{'invisible': [('nombre_moteurs', '&lt;=', 1)],
+                                                  'required': [('nombre_moteurs', '>', 1)]}"/>
+                                    <field name="numero_serie_moteur_tribord"
+                                           attrs="{'invisible': [('nombre_moteurs', '&lt;=', 1)],
+                                                  'required': [('nombre_moteurs', '>', 1)]}"/>
+                                </group>
+                            </group>
+                            <group>
+                                <field name="numero_moteur_annexe"/>
+                            </group>
+                        </page>
+                        <page string="Documents" name="documents">
+                            <field name="document_ids" widget="many2many_binary"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue liste pour les bateaux -->
+    <record id="view_tplb_bateau_tree" model="ir.ui.view">
+        <field name="name">tplb.bateau.tree</field>
+        <field name="model">tplb.bateau</field>
+        <field name="arch" type="xml">
+            <tree string="Bateaux" multi_edit="1">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="numero_coque"/>
+                <field name="nom_port"/>
+                <field name="numero_place"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue recherche pour les bateaux -->
+    <record id="view_tplb_bateau_search" model="ir.ui.view">
+        <field name="name">tplb.bateau.search</field>
+        <field name="model">tplb.bateau</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher un bateau">
+                <field name="name" string="Bateau" filter_domain="['|', '|', ('name', 'ilike', self), ('marque', 'ilike', self), ('modele', 'ilike', self)]"/>
+                <field name="partner_id"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="numero_coque"/>
+                <field name="nom_port"/>
+                <separator/>
+                <filter string="Archivé" name="inactive" domain="[('active', '=', False)]"/>
+                <group expand="0" string="Regrouper par">
+                    <filter string="Propriétaire" name="partner_id" context="{'group_by': 'partner_id'}"/>
+                    <filter string="Marque" name="marque" context="{'group_by': 'marque'}"/>
+                    <filter string="Modele" name="modele" context="{'group_by': 'modele'}"/>
+                    <filter string="Port" name="port" context="{'group_by': 'nom_port'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vue kanban pour les bateaux -->
+    <record id="view_tplb_bateau_kanban" model="ir.ui.view">
+        <field name="name">tplb.bateau.kanban</field>
+        <field name="model">tplb.bateau</field>
+        <field name="arch" type="xml">
+            <kanban default_order="name">
+                <field name="id"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="marque"/>
+                <field name="modele"/>
+                <field name="nom_port"/>
+                <field name="numero_place"/>
+                <field name="image_128"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <!-- Structure sans bordure ou espacement -->
+                        <div class="oe_kanban_global_click" style="display: flex; overflow: hidden; border-radius: 5px; height: 120px; padding: 0; margin: 0;">
+                            <!-- Zone pour l'image ou la lettre - collée aux bords sans espace -->
+                            <div style="width: 110px; min-width: 110px; max-width: 110px; height: 100%; padding: 0; margin: 0;">
+                                <t t-if="record.image_128.raw_value">
+                                    <img t-att-src="kanban_image('tplb.bateau', 'image_128', record.id.raw_value)"
+                                         alt="Bateau" style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
+                                </t>
+                                <t t-else="">
+                                    <div t-attf-style="width: 100%; height: 100%; background-color: #{['#00A09D', '#59B7B9', '#4B9B9B', '#809CC0', '#4C6C8C', '#D47046', '#C66A3F', '#A8A97D'][record.id.raw_value % 8]};
+                                            display: flex; justify-content: center; align-items: center; margin: 0; padding: 0;">
+                                        <span style="color: white; font-size: 55px; font-weight: bold;">
+                                            <t t-esc="record.name.raw_value.charAt(0).toUpperCase()"/>
+                                        </span>
+                                    </div>
+                                </t>
+                            </div>
+
+                            <!-- Zone pour les informations du bateau -->
+                            <div style="padding: 10px 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
+                                <!-- Nom du bateau -->
+                                <div style="font-weight: bold; margin-bottom: 4px; color: #4c4c4c; font-size: 15px;">
+                                    <field name="name"/>
+                                </div>
+
+                                <!-- Marque et modèle avec espace entre les deux -->
+                                <div style="margin-bottom: 4px; color: #666;">
+                                    <span style="font-weight: 500; color: #875A7B;"><field name="marque"/></span>
+                                    <t t-if="record.modele.raw_value">&amp;nbsp;<field name="modele"/></t>
+                                </div>
+
+                                <!-- Propriétaire -->
+                                <div style="margin-bottom: 4px; color: #333;">
+                                    <span style="font-weight: bold; color: #008784;"><field name="partner_id"/></span>
+                                </div>
+
+                                <!-- Nom du port -->
+                                <div style="margin-bottom: 4px; color: #555;">
+                                    <span style="font-weight: bold;">Port :</span> <field name="nom_port"/>
+                                </div>
+
+                                <!-- Numéro de place -->
+                                <div t-if="record.numero_place.raw_value" style="color: #555;">
+                                    <span style="font-weight: bold;">Place :</span> <field name="numero_place"/>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action principale -->
+    <record id="action_tplb_bateau" model="ir.actions.act_window">
+        <field name="name">Bateaux</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">tplb.bateau</field>
+        <field name="view_mode">kanban,tree,form</field>
+        <field name="search_view_id" ref="view_tplb_bateau_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier bateau
+            </p>
+            <p>
+                Créez et gérez les bateaux des clients.
+            </p>
+        </field>
+    </record>
+</odoo>
