@@ -7,26 +7,26 @@ import logging
 _logger = logging.getLogger(__name__)
 
 
-class Bateau(models.Model):
-    _name = 'tplb.bateau'
-    _description = "Bateau"
+class Asset(models.Model):
+    _name = 'am.asset'
+    _description = "Objet Métier"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name desc'
     _check_company_auto = True
 
-    name = fields.Char(string="Nom du bateau", required=True, tracking=True)
+    name = fields.Char(string="Nom de l'objet", required=True, tracking=True)
 
-    # Image du bateau
+    # Image de l'objet
     image_1920 = fields.Image(string="Image", max_width=1920, max_height=1920)
     image_128 = fields.Image("Image (petit)", related="image_1920", max_width=128, max_height=128, store=True)
 
     # Couleur pour l'avatar (style contacts)
     color = fields.Integer(string='Couleur', default=0)
 
-    # Informations générales du bateau
+    # Informations générales de l'objet
     marque = fields.Char(string="Marque", required=True, tracking=True)
     modele = fields.Char(string="Modèle", required=True, tracking=True)
-    numero_coque = fields.Char(string="Numéro de coque", required=True, tracking=True)
+    numero_coque = fields.Char(string="Numéro de série / Coque", required=True, tracking=True)
 
     # Dimensions
     longueur = fields.Float(string="Longueur (m)", tracking=True)
@@ -52,12 +52,12 @@ class Bateau(models.Model):
     numero_moteur_annexe = fields.Char(string="Numéro moteur annexe", tracking=True)
 
     # Emplacement
-    nom_port = fields.Char(string="Nom du port", tracking=True, required=True)
-    numero_place = fields.Char(string="Numéro de place", tracking=True, required=True)
+    nom_port = fields.Char(string="Nom de l'emplacement", tracking=True, required=True)
+    numero_place = fields.Char(string="Numéro/Référence de place", tracking=True, required=True)
 
     # Documents annexes
     document_ids = fields.Many2many('ir.attachment', string="Documents annexes",
-                                    help="Documents associés au bateau (PDF, photos, etc.)")
+                                    help="Documents associés à l'objet (PDF, photos, etc.)")
 
     # Relations
     partner_id = fields.Many2one('res.partner', string="Propriétaire", required=True,
@@ -69,14 +69,13 @@ class Bateau(models.Model):
     @api.constrains('name', 'partner_id')
     def _check_unique_name_partner(self):
         for record in self:
-            # Rechercher s'il existe un autre bateau avec le même nom et le même propriétaire
             domain = [
                 ('name', '=', record.name),
                 ('partner_id', '=', record.partner_id.id),
-                ('id', '!=', record.id)  # Exclure l'enregistrement actuel
+                ('id', '!=', record.id)
             ]
             if self.search_count(domain) > 0:
-                raise ValidationError(_("Un bateau avec ce nom existe déjà pour ce client !"))
+                raise ValidationError(_("Un objet avec ce nom existe déjà pour ce client !"))
 
     @api.constrains('nombre_moteurs')
     def _check_nombre_moteurs(self):
@@ -88,10 +87,7 @@ class Bateau(models.Model):
     def _onchange_nombre_moteurs(self):
         """Masquer/afficher les champs relatifs aux multiples moteurs"""
         for record in self:
-            # Si le nombre de moteurs est supérieur à 1, s'assurer que les champs
-            # de moteurs bâbord et tribord sont visibles.
             if record.nombre_moteurs > 1:
-                # On peut ajouter un message d'information pour guider l'utilisateur
                 return {
                     'warning': {
                         'title': _('Plusieurs moteurs'),
@@ -100,7 +96,5 @@ class Bateau(models.Model):
                     }
                 }
             else:
-                # Si on passe de plusieurs moteurs à un seul, on efface les valeurs
-                # des champs qui ne sont plus pertinents
                 record.numero_serie_moteur_babord = False
                 record.numero_serie_moteur_tribord = False

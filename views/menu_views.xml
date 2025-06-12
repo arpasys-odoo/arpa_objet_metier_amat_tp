@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <!-- Menu racine -->
-    <menuitem id="menu_tplb_bateau_root"
-              name="Bateaux"
-              web_icon="tplb_bateau,static/description/icon.png"
+    <menuitem id="menu_am_asset_root"
+              name="Gestion Objets"
+              web_icon="arpa_objet_metier_amat_tp,static/description/icon.png"
               sequence="100"/>
 
-    <!-- Menu des bateaux -->
-    <menuitem id="menu_tplb_bateau_list"
-              name="Bateaux"
-              parent="menu_tplb_bateau_root"
-              action="action_tplb_bateau"
+    <!-- Menu des objets -->
+    <menuitem id="menu_am_asset_list"
+              name="Objets"
+              parent="menu_am_asset_root"
+              action="action_am_asset"
               sequence="10"/>
 
     <!-- Menu des clients (redirection vers les partenaires) -->
-    <menuitem id="menu_tplb_bateau_clients"
+    <menuitem id="menu_am_asset_clients"
               name="Clients"
-              parent="menu_tplb_bateau_root"
+              parent="menu_am_asset_root"
               action="base.action_partner_form"
               sequence="20"/>
 </odoo>

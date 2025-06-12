@@ -1,22 +1,22 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "TPLB Bateau",
+    'name': "Gestion d'Objets Métier",
 
-    'summary': "Gestion des bateaux des clients",
+    'summary': "Gestion générique d'objets ou biens appartenant aux clients",
 
     'description': """
-Ce module permet de gérer les bateaux des clients.
+Ce module permet de gérer des objets métier pour les clients.
 Fonctionnalités:
-- Enregistrement des informations des bateaux
-- Association d'un bateau à un client
-- Gestion des informations techniques (moteurs, dimensions, emplacement)
-- Fiche client améliorée avec CA annuel, historique, type de client et alertes
+- Enregistrement des informations des objets (biens, équipements, etc.)
+- Association d'un objet à un client
+- Gestion des informations techniques (caractéristiques, dimensions, emplacement)
+- Fiche client améliorée avec CA annuel, historique, et alertes
     """,
 
     'author': "Léo",
     'website': "https://studio.arpasys.com/",
 
-    'category': 'Nautique',
+    'category': 'Tools',
     'version': '0.1',
 
     # any module necessary for this one to work correctly
@@ -28,19 +28,18 @@ Fonctionnalités:
 
     # always loaded
     'data': [
-        'security/tplb_bateau_security.xml',
+        'security/am_asset_security.xml',
         'security/ir.model.access.csv',
 
         'data/ir_cron.xml',
 
-        'views/bateau_views.xml',
-        'views/partner_views.xml',
+        'views/asset_views.xml',
+        'views/res_partner_views.xml',
         'views/menu_views.xml',
     ],
 
     'assets': {
         'web.assets_backend': [
-            # 'tplb_bateau/static/src/scss/style.scss',
         ],
     },
 

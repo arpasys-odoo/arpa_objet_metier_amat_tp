@@ -1,4 +1,4 @@
 # -*- coding: utf-8 -*-
 
-from . import bateau
-from . import partner
+from . import asset
+from . import res_partner

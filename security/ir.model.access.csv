@@ -1,5 +1,5 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_tplb_bateau_user,tplb.bateau.user,model_tplb_bateau,tplb_bateau.tplb_bateau_group_user,1,0,0,0
-access_tplb_bateau_manager,tplb.bateau.manager,model_tplb_bateau,tplb_bateau.tplb_bateau_group_manager,1,1,1,1
-access_tplb_ca_historique_user,tplb.ca.historique.user,model_tplb_ca_historique,tplb_bateau.tplb_bateau_group_user,1,1,1,0
-access_tplb_ca_historique_manager,tplb.ca.historique.manager,model_tplb_ca_historique,tplb_bateau.tplb_bateau_group_manager,1,1,1,1
+access_am_asset_user,am.asset.user,model_am_asset,arpa_objet_metier_amat_tp.am_asset_group_user,1,0,0,0
+access_am_asset_manager,am.asset.manager,model_am_asset,arpa_objet_metier_amat_tp.am_asset_group_manager,1,1,1,1
+access_am_ca_historique_user,am.ca.historique.user,model_am_ca_historique,arpa_objet_metier_amat_tp.am_asset_group_user,1,1,1,0
+access_am_ca_historique_manager,am.ca.historique.manager,model_am_ca_historique,arpa_objet_metier_amat_tp.am_asset_group_manager,1,1,1,1

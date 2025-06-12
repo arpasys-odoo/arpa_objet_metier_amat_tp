@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Catégorie de groupes -->
+        <record id="module_am_asset_category" model="ir.module.category">
+            <field name="name">Gestion Objets</field>
+            <field name="description">Catégorie pour la gestion des objets métier</field>
+            <field name="sequence">20</field>
+        </record>
+
+        <!-- Groupe utilisateur -->
+        <record id="am_asset_group_user" model="res.groups">
+            <field name="name">Utilisateur</field>
+            <field name="category_id" ref="module_am_asset_category"/>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        </record>
+
+        <!-- Groupe responsable -->
+        <record id="am_asset_group_manager" model="res.groups">
+            <field name="name">Responsable</field>
+            <field name="category_id" ref="module_am_asset_category"/>
+            <field name="implied_ids" eval="[(4, ref('am_asset_group_user'))]"/>
+            <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
+        </record>
+
+        <!-- Règles de sécurité -->
+        <record id="am_asset_comp_rule" model="ir.rule">
+            <field name="name">Règle multi-société pour objets</field>
+            <field name="model_id" ref="model_am_asset"/>
+            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
+        </record>
+    </data>
+</odoo>

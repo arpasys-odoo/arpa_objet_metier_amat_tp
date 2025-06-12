@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vue formulaire pour les bateaux -->
-    <record id="view_tplb_bateau_form" model="ir.ui.view">
-        <field name="name">tplb.bateau.form</field>
-        <field name="model">tplb.bateau</field>
+    <!-- Vue formulaire pour les objets -->
+    <record id="view_am_asset_form" model="ir.ui.view">
+        <field name="name">am.asset.form</field>
+        <field name="model">am.asset</field>
         <field name="arch" type="xml">
-            <form string="Bateau">
+            <form string="Objet">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                     </div>
                     <field name="image_1920" widget="image" class="oe_avatar" options="{'preview_image': 'image_128'}"/>
                     <div class="oe_title">
                         <h1>
-                            <field name="name" placeholder="Nom du bateau"/>
+                            <field name="name" placeholder="Nom de l'objet"/>
                         </h1>
                     </div>
                     <group>
@@ -76,12 +76,12 @@
         </field>
     </record>
 
-    <!-- Vue liste pour les bateaux -->
-    <record id="view_tplb_bateau_tree" model="ir.ui.view">
-        <field name="name">tplb.bateau.tree</field>
-        <field name="model">tplb.bateau</field>
+    <!-- Vue liste pour les objets -->
+    <record id="view_am_asset_tree" model="ir.ui.view">
+        <field name="name">am.asset.tree</field>
+        <field name="model">am.asset</field>
         <field name="arch" type="xml">
-            <tree string="Bateaux" multi_edit="1">
+            <tree string="Objets" multi_edit="1">
                 <field name="name"/>
                 <field name="partner_id"/>
                 <field name="marque"/>
@@ -93,13 +93,13 @@
         </field>
     </record>
 
-    <!-- Vue recherche pour les bateaux -->
-    <record id="view_tplb_bateau_search" model="ir.ui.view">
-        <field name="name">tplb.bateau.search</field>
-        <field name="model">tplb.bateau</field>
+    <!-- Vue recherche pour les objets -->
+    <record id="view_am_asset_search" model="ir.ui.view">
+        <field name="name">am.asset.search</field>
+        <field name="model">am.asset</field>
         <field name="arch" type="xml">
-            <search string="Rechercher un bateau">
-                <field name="name" string="Bateau" filter_domain="['|', '|', ('name', 'ilike', self), ('marque', 'ilike', self), ('modele', 'ilike', self)]"/>
+            <search string="Rechercher un objet">
+                <field name="name" string="Objet" filter_domain="['|', '|', ('name', 'ilike', self), ('marque', 'ilike', self), ('modele', 'ilike', self)]"/>
                 <field name="partner_id"/>
                 <field name="marque"/>
                 <field name="modele"/>
@@ -111,16 +111,16 @@
                     <filter string="Propriétaire" name="partner_id" context="{'group_by': 'partner_id'}"/>
                     <filter string="Marque" name="marque" context="{'group_by': 'marque'}"/>
                     <filter string="Modele" name="modele" context="{'group_by': 'modele'}"/>
-                    <filter string="Port" name="port" context="{'group_by': 'nom_port'}"/>
+                    <filter string="Emplacement" name="port" context="{'group_by': 'nom_port'}"/>
                 </group>
             </search>
         </field>
     </record>
 
-    <!-- Vue kanban pour les bateaux -->
-    <record id="view_tplb_bateau_kanban" model="ir.ui.view">
-        <field name="name">tplb.bateau.kanban</field>
-        <field name="model">tplb.bateau</field>
+    <!-- Vue kanban pour les objets -->
+    <record id="view_am_asset_kanban" model="ir.ui.view">
+        <field name="name">am.asset.kanban</field>
+        <field name="model">am.asset</field>
         <field name="arch" type="xml">
             <kanban default_order="name">
                 <field name="id"/>
@@ -134,13 +134,11 @@
                 <field name="color"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <!-- Structure sans bordure ou espacement -->
                         <div class="oe_kanban_global_click" style="display: flex; overflow: hidden; border-radius: 5px; height: 120px; padding: 0; margin: 0;">
-                            <!-- Zone pour l'image ou la lettre - collée aux bords sans espace -->
                             <div style="width: 110px; min-width: 110px; max-width: 110px; height: 100%; padding: 0; margin: 0;">
                                 <t t-if="record.image_128.raw_value">
-                                    <img t-att-src="kanban_image('tplb.bateau', 'image_128', record.id.raw_value)"
-                                         alt="Bateau" style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
+                                    <img t-att-src="kanban_image('am.asset', 'image_128', record.id.raw_value)"
+                                         alt="Objet" style="width: 100%; height: 100%; object-fit: cover; display: block;"/>
                                 </t>
                                 <t t-else="">
                                     <div t-attf-style="width: 100%; height: 100%; background-color: #{['#00A09D', '#59B7B9', '#4B9B9B', '#809CC0', '#4C6C8C', '#D47046', '#C66A3F', '#A8A97D'][record.id.raw_value % 8]};
@@ -152,30 +150,20 @@
                                 </t>
                             </div>
 
-                            <!-- Zone pour les informations du bateau -->
                             <div style="padding: 10px 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: center;">
-                                <!-- Nom du bateau -->
                                 <div style="font-weight: bold; margin-bottom: 4px; color: #4c4c4c; font-size: 15px;">
                                     <field name="name"/>
                                 </div>
-
-                                <!-- Marque et modèle avec espace entre les deux -->
                                 <div style="margin-bottom: 4px; color: #666;">
                                     <span style="font-weight: 500; color: #875A7B;"><field name="marque"/></span>
                                     <t t-if="record.modele.raw_value">&amp;nbsp;<field name="modele"/></t>
                                 </div>
-
-                                <!-- Propriétaire -->
                                 <div style="margin-bottom: 4px; color: #333;">
                                     <span style="font-weight: bold; color: #008784;"><field name="partner_id"/></span>
                                 </div>
-
-                                <!-- Nom du port -->
                                 <div style="margin-bottom: 4px; color: #555;">
-                                    <span style="font-weight: bold;">Port :</span> <field name="nom_port"/>
+                                    <span style="font-weight: bold;">Emplacement :</span> <field name="nom_port"/>
                                 </div>
-
-                                <!-- Numéro de place -->
                                 <div t-if="record.numero_place.raw_value" style="color: #555;">
                                     <span style="font-weight: bold;">Place :</span> <field name="numero_place"/>
                                 </div>
@@ -188,18 +176,18 @@
     </record>
 
     <!-- Action principale -->
-    <record id="action_tplb_bateau" model="ir.actions.act_window">
-        <field name="name">Bateaux</field>
+    <record id="action_am_asset" model="ir.actions.act_window">
+        <field name="name">Objets</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">tplb.bateau</field>
+        <field name="res_model">am.asset</field>
         <field name="view_mode">kanban,tree,form</field>
-        <field name="search_view_id" ref="view_tplb_bateau_search"/>
+        <field name="search_view_id" ref="view_am_asset_search"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Créer votre premier bateau
+                Créer votre premier objet
             </p>
             <p>
-                Créez et gérez les bateaux des clients.
+                Créez et gérez les objets des clients.
             </p>
         </field>
     </record>
