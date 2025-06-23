@@ -113,7 +113,7 @@
         </field>
     </record>
 
-    <!-- Vue recherche pour les Machines -->
+    <!-- Vue recherche pour les Machines  -->
     <record id="view_am_asset_search" model="ir.ui.view">
         <field name="name">am.asset.search</field>
         <field name="model">am.asset</field>
