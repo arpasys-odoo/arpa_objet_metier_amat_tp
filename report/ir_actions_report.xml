@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="action_report_bon_intervention" model="ir.actions.report">
+            <field name="name">Bon d'Intervention</field>
+            <field name="model">bon_intervention.bon_intervention</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">arpa_objet_metier_amat_tp.report_bon_intervention</field>
+            <field name="report_file">arpa_objet_metier_amat_tp.report_bon_intervention</field>
+            <field name="binding_model_id" ref="model_bon_intervention_bon_intervention"/>
+            <field name="binding_type">report</field>
+        </record>
+    </data>
+</odoo>
 
 
 </odoo>

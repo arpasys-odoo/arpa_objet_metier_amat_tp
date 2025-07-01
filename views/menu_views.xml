@@ -1,22 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Menu racine -->
+    <!-- ========================================= -->
+    <!-- MENU PRINCIPAL : GESTION OBJETS -->
+    <!-- ========================================= -->
+
     <menuitem id="menu_am_asset_root"
               name="Gestion Objets"
               web_icon="arpa_objet_metier_amat_tp,static/description/icon.png"
               sequence="100"/>
 
-    <!-- Menu des objets -->
+    <!-- Machines BTP (patrimoine) -->
     <menuitem id="menu_am_asset_list"
-              name="Objets"
+              name="Machines"
               parent="menu_am_asset_root"
               action="action_am_asset"
               sequence="10"/>
 
-    <!-- Menu des clients (redirection vers les partenaires) -->
+    <!-- Clients (propriétaires) -->
     <menuitem id="menu_am_asset_clients"
               name="Clients"
               parent="menu_am_asset_root"
               action="base.action_partner_form"
               sequence="20"/>
+
+    <!-- ========================================= -->
+    <!-- INTÉGRATION DANS MAINTENANCE ODOO -->
+    <!-- ========================================= -->
+
+    <menuitem id="menu_maintenance_machines_btp"
+              name="Machines"
+              parent="maintenance.menu_maintenance_title"
+              action="action_maintenance_request_machines_btp"
+              sequence="25"/>
+
+    <!-- ========================================= -->
+    <!-- INTÉGRATION DANS VENTES ODOO -->
+    <!-- ========================================= -->
+
+    <menuitem id="menu_bon_intervention_sales"
+              name="Bons d'Intervention"
+              parent="sale.sale_menu_root"
+              action="action_bon_intervention"
+              sequence="15"/>
 </odoo>

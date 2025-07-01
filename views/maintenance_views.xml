@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire maintenance - SEULEMENT celle qui fonctionne -->
+    <record id="hr_equipment_request_view_form_inherit_arpa" model="ir.ui.view">
+        <field name="name">maintenance.request.form.inherit.arpa</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_request_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet" position="inside">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-wrench"/> <strong>Gestion Machines BTP</strong>
+                </div>
+                <group string="Machine BTP" name="machine_btp_section" class="oe_title">
+                    <field name="asset_id" string="🔧 Machine BTP"
+                           help="Sélectionnez la machine BTP concernée par cette demande"
+                           options="{'no_create': True}"/>
+                    <field name="partner_id" string="👤 Client propriétaire" readonly="1"
+                           help="Client propriétaire de la machine (rempli automatiquement)"/>
+                </group>
+                <separator string="📋 Détails de la demande de maintenance"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Vue calendrier -->
+    <record id="hr_equipment_view_calendar_inherit_arpa" model="ir.ui.view">
+        <field name="name">maintenance.request.calendar.inherit.arpa</field>
+        <field name="model">maintenance.request</field>
+        <field name="inherit_id" ref="maintenance.hr_equipment_view_calendar"/>
+        <field name="arch" type="xml">
+            <!-- Ajouter nos champs dans le calendrier -->
+            <xpath expr="//calendar" position="inside">
+                <field name="asset_id"/>
+                <field name="partner_id"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Action spécifique pour les demandes machines -->
+    <record id="action_maintenance_request_machines_btp" model="ir.actions.act_window">
+        <field name="name">Maintenance Machines</field>
+        <field name="res_model">maintenance.request</field>
+        <field name="view_mode">tree,form,calendar,kanban</field>
+        <field name="domain">[('asset_id', '!=', False)]</field>
+        <field name="context">{
+            'search_default_machines_btp_only': 1,
+            'default_maintenance_type': 'corrective'
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre première demande de maintenance pour une machine BTP
+            </p>
+            <p>
+                Suivez ici toutes les demandes de maintenance de vos machines de chantier.
+            </p>
+        </field>
+    </record>
+</odoo>

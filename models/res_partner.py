@@ -1,9 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from odoo import models, fields, api, _
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-
 
 class ResPartner(models.Model):
     _inherit = 'res.partner'
@@ -13,12 +11,8 @@ class ResPartner(models.Model):
 
     # Nouveaux champs selon la fiche client
     email_contact = fields.Char(string="Email de contact")
-
-    # Champ pour alerte info client
     alerte_info_client = fields.Text(string="Alerte info client",
                                      help="Information importante concernant ce client")
-
-    # Champ pour memo info client
     memo_info_client = fields.Text(string="Mémo info client",
                                    help="Informations diverses concernant ce client")
 
@@ -90,8 +84,8 @@ class ResPartner(models.Model):
             invoices = self.env['account.move'].search(domain)
 
             total_ca = sum(
-                invoice.amount_total if invoice.move_type == 'out_invoice' else -invoice.amount_total for invoice in
-                invoices)
+                invoice.amount_total if invoice.move_type == 'out_invoice' else -invoice.amount_total
+                for invoice in invoices)
             partner.ca_client_annuel = total_ca
 
             ca_historique = self.env['am.ca.historique'].search([
@@ -113,7 +107,6 @@ class ResPartner(models.Model):
         """Cron job pour calculer le CA annuel de tous les clients"""
         partners = self.search([])
         partners._compute_ca_client_annuel()
-
 
 class PartnerCAHistorique(models.Model):
     _name = 'am.ca.historique'

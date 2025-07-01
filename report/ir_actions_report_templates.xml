@@ -1,5 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_bon_intervention_document">
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.partner_id.lang)"/>
+            <div class="page">
+                <div class="oe_structure"/>
+                <h2>
+                    <span>Bon d'Intervention: </span>
+                    <span t-field="doc.name"/>
+                </h2>
 
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Client:</strong>
+                        <p t-field="doc.partner_id"/>
+                        <p t-field="doc.partner_id.street"/>
+                        <p t-field="doc.partner_id.city"/>
+                        <p t-field="doc.partner_id.country_id"/>
+                    </div>
+                    <div class="col-6">
+                        <strong>Date d'intervention:</strong>
+                        <p t-field="doc.date_intervention"/>
+                        <strong>Technicien:</strong>
+                        <p t-field="doc.technician_id"/>
+                        <strong>Durée:</strong>
+                        <p><span t-field="doc.duration"/> heures</p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <strong>Description de l'intervention:</strong>
+                        <p t-field="doc.description"/>
+                    </div>
+                </div>
+
+                <div t-if="doc.asset_ids" class="row mt32 mb32">
+                    <div class="col-12">
+                        <strong>Équipements concernés:</strong>
+                        <ul>
+                            <t t-foreach="doc.asset_ids" t-as="asset">
+                                <li>
+                                    <span t-field="asset.name"/> - <span t-field="asset.serial_number"/>
+                                </li>
+                            </t>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="row mt32 mb32">
+                    <div class="col-6">
+                        <strong>Signature du client:</strong>
+                        <div t-if="doc.signature">
+                            <img t-att-src="'data:image/png;base64,%s' % to_text(doc.signature)" style="max-height: 100px;"/>
+                            <p t-if="doc.signature_date">Date: <span t-field="doc.signature_date"/></p>
+                        </div>
+                        <p t-else="">Non signé</p>
+                    </div>
+                    <div class="col-6">
+                        <strong>Signature du technicien:</strong>
+                        <div style="min-height: 100px; border-bottom: 1px solid black; margin-top: 50px;"></div>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <template id="report_bon_intervention">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="arpa_objet_metier_amat_tp.report_bon_intervention_document" t-lang="doc.partner_id.lang"/>
+            </t>
+        </t>
+    </template>
+</odoo>
 <odoo>
 
 

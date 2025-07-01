@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Vue formulaire -->
+    <record id="view_form_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.form</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <form string="Bon d'Intervention">
+                <header>
+                    <button name="action_confirm" string="Confirmer" type="object" states="draft" class="oe_highlight"/>
+                    <button name="action_done" string="Terminer" type="object" states="confirmed" class="oe_highlight"/>
+                    <button name="action_create_invoice" string="Créer Facture" type="object" states="done" class="oe_highlight"/>
+                    <button name="action_cancel" string="Annuler" type="object" states="draft,confirmed"/>
+                    <button name="action_draft" string="Remettre en brouillon" type="object" states="cancelled"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirmed,done,invoiced"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="action_create_quotation" string="Créer un devis" type="object" class="oe_highlight"
+                                attrs="{'invisible': [('state', 'in', ['invoiced', 'cancelled'])]}"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="partner_id"/>
+                            <field name="asset_id"/>
+                            <field name="maintenance_request_id"/>
+                            <field name="user_id"/>
+                            <field name="technician_id"/>
+                        </group>
+                        <group>
+                            <field name="date_order"/>
+                            <field name="date_intervention"/>
+                            <field name="lieu_intervention"/>
+                            <field name="date_panne"/>
+                            <field name="date_fin_reparation"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Détails de l'intervention">
+                            <group>
+                                <field name="description" placeholder="Description générale..."/>
+                                <field name="detail_panne_intervention" placeholder="Détail de la panne et intervention..."/>
+                                <field name="fourniture" placeholder="Fournitures utilisées..."/>
+                            </group>
+                            <group>
+                                <group>
+                                    <field name="duration" string="Durée (heures)"/>
+                                    <field name="heures" string="Heures complémentaires"/>
+                                    <field name="total_heure" readonly="1"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Devis et Factures">
+                            <group>
+                                <field name="sale_order_id"/>
+                                <field name="sale_order_ids" widget="many2many" readonly="1">
+                                    <tree>
+                                        <field name="name"/>
+                                        <field name="date_order"/>
+                                        <field name="amount_total"/>
+                                        <field name="state"/>
+                                    </tree>
+                                </field>
+                                <button name="action_view_invoices" string="Voir les factures" type="object" class="oe_highlight"
+                                        attrs="{'invisible': [('invoice_ids', '=', [])]}"/>
+                                <field name="invoice_ids" invisible="1"/>
+                            </group>
+                        </page>
+                        <page string="Notes internes">
+                            <field name="notes"/>
+                        </page>
+                        <page string="Signature client" attrs="{'invisible': [('state', 'not in', ['done', 'invoiced'])]}">
+                            <group>
+                                <field name="signature" widget="signature"/>
+                                <field name="signature_date" readonly="1" attrs="{'invisible': [('signature', '=', False)]}"/>
+                            </group>
+                        </page>
+                        <page string="Factures" attrs="{'invisible': [('invoice_ids', '=', [])]}">
+                            <field name="invoice_ids" readonly="1">
+                                <tree>
+                                    <field name="name"/>
+                                    <field name="invoice_date"/>
+                                    <field name="state"/>
+                                    <field name="amount_total"/>
+                                    <field name="payment_state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Vue liste -->
+    <record id="view_tree_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.tree</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <tree string="Bons d'Intervention" decoration-info="state == 'draft'" decoration-success="state == 'done'" decoration-muted="state == 'cancelled'">
+                <field name="name"/>
+                <field name="asset_id"/>
+                <field name="partner_id"/>
+                <field name="date_order"/>
+                <field name="date_intervention"/>
+                <field name="lieu_intervention"/>
+                <field name="technician_id"/>
+                <field name="state"/>
+                <field name="total_heure" sum="Total des heures"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Vue recherche -->
+    <record id="view_search_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.search</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <search string="Rechercher des bons d'intervention">
+                <field name="name" string="Référence"/>
+                <field name="asset_id"/>
+                <field name="partner_id"/>
+                <field name="lieu_intervention"/>
+                <field name="technician_id"/>
+                <separator/>
+                <filter string="Mes bons d'intervention" name="my_interventions" domain="[('user_id', '=', uid)]"/>
+                <filter string="Mes interventions (technicien)" name="my_tech_interventions" domain="[('technician_id', '=', uid)]"/>
+                <filter string="Brouillon" name="draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Confirmé" name="confirmed" domain="[('state', '=', 'confirmed')]"/>
+                <filter string="Terminé" name="done" domain="[('state', '=', 'done')]"/>
+                <filter string="Facturé" name="invoiced" domain="[('state', '=', 'invoiced')]"/>
+                <filter string="Annulé" name="cancelled" domain="[('state', '=', 'cancelled')]"/>
+                <separator/>
+                <filter string="Date d'intervention" name="date_intervention" date="date_intervention"/>
+                <group expand="0" string="Group By">
+                    <filter string="Client" name="partner_id" context="{'group_by':'partner_id'}"/>
+                    <filter string="Machine" name="asset_id" context="{'group_by':'asset_id'}"/>
+                    <filter string="Technicien" name="group_technician" context="{'group_by': 'technician_id'}"/>
+                    <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
+                    <filter string="Mois d'intervention" name="group_month" context="{'group_by': 'date_intervention:month'}"/>
+                    <filter string="Société" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vue calendrier -->
+    <record id="view_calendar_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.calendar</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <calendar string="Bons d'Intervention" date_start="date_intervention" color="state" mode="month">
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="technician_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Vue pivot -->
+    <record id="view_pivot_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.pivot</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <pivot string="Analyse des interventions">
+                <field name="date_intervention" type="row" interval="month"/>
+                <field name="technician_id" type="col"/>
+                <field name="total_heure" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Vue graphique -->
+    <record id="view_graph_bon_intervention" model="ir.ui.view">
+        <field name="name">bon_intervention.bon_intervention.graph</field>
+        <field name="model">bon_intervention.bon_intervention</field>
+        <field name="arch" type="xml">
+            <graph string="Interventions par technicien">
+                <field name="technician_id"/>
+                <field name="total_heure" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <!-- Action principale - GARANTIE DE FONCTIONNER -->
+    <record id="action_bon_intervention" model="ir.actions.act_window">
+        <field name="name">Bons d'Intervention</field>
+        <field name="res_model">bon_intervention.bon_intervention</field>
+        <field name="view_mode">tree,form,calendar,pivot,graph</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Créer votre premier bon d'intervention
+            </p>
+            <p>
+                Les bons d'intervention vous permettent de suivre les interventions réalisées chez vos clients.
+            </p>
+        </field>
+    </record>
+</odoo>

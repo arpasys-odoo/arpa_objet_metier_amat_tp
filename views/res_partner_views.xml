@@ -14,23 +14,20 @@
                 </button>
             </div>
 
-            <!-- Ajouter champs alertes et mémos en haut du formulaire -->
-            <xpath expr="//field[@name='vat']" position="before">
-                <field name="alerte_info_client" placeholder="Actualité importante sur le client"
-                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}"
-                       class="text-danger"/>
-                <field name="memo_info_client" placeholder="Informations diverses"
-                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}"/>
-            </xpath>
-
-            <!-- Ajouter champs CA client annuel et solde financier -->
-            <xpath expr="//field[@name='category_id']" position="after">
-                <field name="ca_client_annuel" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}" widget="monetary"/>
-            </xpath>
-
-            <!-- Ajout du champ email de contact -->
-            <xpath expr="//field[@name='website']" position="before">
-                <field name="email_contact" widget="email" placeholder="Email de contact"/>
+            <!-- Ajouter champs alertes et mémos dans un groupe à la fin de sheet -->
+            <xpath expr="//sheet" position="inside">
+                <group string="Informations Complémentaires"
+                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
+                    <group>
+                        <field name="alerte_info_client" placeholder="Actualité importante sur le client"
+                               class="text-danger"/>
+                        <field name="memo_info_client" placeholder="Informations diverses"/>
+                        <field name="email_contact" widget="email" placeholder="Email de contact"/>
+                    </group>
+                    <group>
+                        <field name="ca_client_annuel" widget="monetary"/>
+                    </group>
+                </group>
             </xpath>
 
             <!-- Ajouter onglet pour l'historique du CA -->

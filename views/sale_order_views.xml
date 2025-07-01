@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Extension de la vue formulaire des devis -->
+    <record id="view_order_form_inherit" model="ir.ui.view">
+        <field name="name">sale.order.form.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_view_bon_interventions" type="object"
+                        class="oe_stat_button" icon="fa-wrench"
+                        attrs="{'invisible': [('bon_intervention_count', '=', 0)]}">
+                    <field name="bon_intervention_count" widget="statinfo" string="Interventions"/>
+                </button>
+            </xpath>
+
+            <xpath expr="//field[@name='payment_term_id']" position="after">
+                <field name="bon_intervention_id" attrs="{'readonly': [('state', 'not in', ['draft', 'sent'])]}"/>
+            </xpath>
+
+            <xpath expr="//page[@name='other_information']" position="after">
+                <page string="Maintenance" name="maintenance">
+                    <group>
+                        <group>
+                            <field name="has_maintenance_contract"/>
+                            <field name="next_maintenance_date" attrs="{'invisible': [('has_maintenance_contract', '=', False)]}"/>
+                            <field name="maintenance_frequency" attrs="{'invisible': [('has_maintenance_contract', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <div class="oe_right oe_button_box" name="buttons">
+                        <button class="oe_highlight" name="action_create_bon_intervention" type="object" string="Créer Bon d'Intervention"/>
+                    </div>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>
