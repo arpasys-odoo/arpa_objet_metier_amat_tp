@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- Vue formulaire maintenance - SEULEMENT celle qui fonctionne -->
+    <!-- Vue formulaire maintenance -->
     <record id="hr_equipment_request_view_form_inherit_arpa" model="ir.ui.view">
         <field name="name">maintenance.request.form.inherit.arpa</field>
         <field name="model">maintenance.request</field>
@@ -8,16 +8,16 @@
         <field name="arch" type="xml">
             <xpath expr="//sheet" position="inside">
                 <div class="alert alert-info" role="alert">
-                    <i class="fa fa-wrench"/> <strong>Gestion Machines BTP</strong>
+                    <strong>Gestion Machines</strong>
                 </div>
-                <group string="Machine BTP" name="machine_btp_section" class="oe_title">
-                    <field name="asset_id" string="🔧 Machine BTP"
-                           help="Sélectionnez la machine BTP concernée par cette demande"
+                <group string="Machine" name="machine_btp_section" class="oe_title">
+                    <field name="asset_id" string="Machine"
+                           help="Sélectionnez la machine concernée par cette demande"
                            options="{'no_create': True}"/>
-                    <field name="partner_id" string="👤 Client propriétaire" readonly="1"
+                    <field name="partner_id" string="Client propriétaire" readonly="1"
                            help="Client propriétaire de la machine (rempli automatiquement)"/>
                 </group>
-                <separator string="📋 Détails de la demande de maintenance"/>
+                <separator string="Détails de la demande de maintenance"/>
             </xpath>
         </field>
     </record>
@@ -48,7 +48,7 @@
         }</field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
-                Créer votre première demande de maintenance pour une machine BTP
+                Créer votre première demande de maintenance pour une machine
             </p>
             <p>
                 Suivez ici toutes les demandes de maintenance de vos machines de chantier.

@@ -23,19 +23,6 @@
             <field name="users" eval="[(4, ref('base.user_root')), (4, ref('base.user_admin'))]"/>
         </record>
 
-        <!-- Règles de sécurité pour assets -->
-        <record id="am_asset_comp_rule" model="ir.rule">
-            <field name="name">Règle multi-société pour objets</field>
-            <field name="model_id" ref="model_am_asset"/>
-            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
-        </record>
-
-        <!-- Règles de sécurité pour bons d'intervention -->
-        <record id="bon_intervention_comp_rule" model="ir.rule">
-            <field name="name">Bon d'Intervention multi-société</field>
-            <field name="model_id" ref="model_bon_intervention_bon_intervention"/>
-            <field name="global" eval="True"/>
-            <field name="domain_force">['|', ('company_id', '=', False), ('company_id', 'in', company_ids)]</field>
-        </record>
+        
     </data>
 </odoo>

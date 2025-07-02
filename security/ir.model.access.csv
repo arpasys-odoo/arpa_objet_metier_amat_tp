@@ -5,3 +5,5 @@ access_am_ca_historique_user,am.ca.historique.user,model_am_ca_historique,am_ass
 access_am_ca_historique_manager,am.ca.historique.manager,model_am_ca_historique,am_asset_group_manager,1,1,1,1
 access_bon_intervention_user,bon.intervention.user,model_bon_intervention_bon_intervention,am_asset_group_user,1,1,1,0
 access_bon_intervention_manager,bon.intervention.manager,model_bon_intervention_bon_intervention,am_asset_group_manager,1,1,1,1
+access_am_machine_type_user,am.machine.type.user,model_am_machine_type,am_asset_group_user,1,0,0,0
+access_am_machine_type_manager,am.machine.type.manager,model_am_machine_type,am_asset_group_manager,1,1,1,1

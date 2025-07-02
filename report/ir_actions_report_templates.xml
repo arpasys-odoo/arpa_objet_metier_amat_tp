@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_bon_intervention_document">
         <t t-call="web.external_layout">
@@ -42,7 +41,7 @@
                         <ul>
                             <t t-foreach="doc.asset_ids" t-as="asset">
                                 <li>
-                                    <span t-field="asset.name"/> - <span t-field="asset.serial_number"/>
+                                    <span t-field="asset.name"/> - <span t-field="asset.numero_serie"/>
                                 </li>
                             </t>
                         </ul>
@@ -74,9 +73,4 @@
             </t>
         </t>
     </template>
-</odoo>
-<odoo>
-
-
-
 </odoo>

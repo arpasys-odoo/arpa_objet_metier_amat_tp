@@ -29,18 +29,24 @@ Fonctionnalités:
         'contacts',
     ],
     'data': [
+        # Sécurité d'abord
         'security/am_asset_security.xml',
         'security/ir.model.access.csv',
 
+        # Données de base
         'data/ir_sequence_data.xml',
         'data/ir_cron.xml',
 
-        'views/bon_intervention_views.xml',
+        # Vues dans l'ordre de dépendance
+        'views/machine_type_views.xml',
         'views/asset_views.xml',
+        'views/bon_intervention_views.xml',
         'views/maintenance_views.xml',
         'views/sale_order_views.xml',
         'views/res_partner_views.xml',
         'views/menu_views.xml',
+        'views/hide_native_menu.xml',
+        'views/maintenance_integration_views.xml',
     ],
     'assets': {
         'web.assets_backend': [],

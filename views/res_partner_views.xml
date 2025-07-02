@@ -14,20 +14,23 @@
                 </button>
             </div>
 
-            <!-- Ajouter champs alertes et mémos dans un groupe à la fin de sheet -->
-            <xpath expr="//sheet" position="inside">
-                <group string="Informations Complémentaires"
-                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}">
-                    <group>
-                        <field name="alerte_info_client" placeholder="Actualité importante sur le client"
-                               class="text-danger"/>
-                        <field name="memo_info_client" placeholder="Informations diverses"/>
-                        <field name="email_contact" widget="email" placeholder="Email de contact"/>
-                    </group>
-                    <group>
-                        <field name="ca_client_annuel" widget="monetary"/>
-                    </group>
-                </group>
+            <!-- Ajouter champs alertes et mémos en haut du formulaire -->
+            <xpath expr="//field[@name='vat']" position="before">
+                <field name="alerte_info_client" placeholder="Actualité importante sur le client"
+                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}"
+                       class="text-danger"/>
+                <field name="memo_info_client" placeholder="Informations diverses"
+                       attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}"/>
+            </xpath>
+
+            <!-- Ajouter champs CA client annuel et solde financier -->
+            <xpath expr="//field[@name='category_id']" position="after">
+                <field name="ca_client_annuel" attrs="{'invisible': [('is_company','=',False),('parent_id','!=',False)]}" widget="monetary"/>
+            </xpath>
+
+            <!-- Ajout du champ email de contact -->
+            <xpath expr="//field[@name='website']" position="before">
+                <field name="email_contact" widget="email" placeholder="Email de contact"/>
             </xpath>
 
             <!-- Ajouter onglet pour l'historique du CA -->
@@ -52,13 +55,13 @@
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.res_partner_kanban_view"/>
         <field name="arch" type="xml">
-            <field name="email" position="after">
+            <xpath expr="//field[@name='email']" position="after">
                 <field name="asset_count"/>
                 <field name="alerte_info_client"/>
-            </field>
+            </xpath>
             <xpath expr="//div[hasclass('oe_kanban_details')]" position="inside">
                 <div t-if="record.asset_count.raw_value > 0" class="mt-1">
-                    <i class="fa fa-cube mr-1" role="img" aria-label="Objets" title="Objets"/>
+                    <i class="fa fa-cube me-1" role="img" aria-label="Objets" title="Objets"/>
                     <field name="asset_count"/> objets
                 </div>
                 <div t-if="record.alerte_info_client.raw_value" class="mt-1 text-danger">

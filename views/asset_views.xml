@@ -32,7 +32,7 @@
                     <group>
                         <group string="Identification">
                             <field name="partner_id" string="Client Propriétaire" options="{'no_create': True}"/>
-                            <field name="type_machine"/>
+                            <field name="type_machine_id"/>
                             <field name="numero_serie" string="Numéro de Série (VIN)"/>
                             <field name="numero_parc" string="N° de Parc Client"/>
                             <field name="annee_fabrication"/>
@@ -41,7 +41,7 @@
                             <field name="compteur_horaire"/>
                             <field name="date_releve_horaire"/>
                             <field name="poids_operationnel" string="Poids (kg)"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
+                            
                             <field name="active" invisible="1"/>
                         </group>
                     </group>
@@ -125,12 +125,12 @@
                 <field name="partner_id" string="Client"/>
                 <field name="numero_serie"/>
                 <field name="numero_parc"/>
-                <field name="type_machine"/>
+                <field name="type_machine_id"/>
                 <separator/>
                 <filter string="Archivé" name="inactive" domain="[('active', '=', False)]"/>
                 <group expand="0" string="Regrouper par">
                     <filter string="Client Propriétaire" name="group_by_partner" context="{'group_by': 'partner_id'}"/>
-                    <filter string="Type de machine" name="group_by_type" context="{'group_by': 'type_machine'}"/>
+                    <filter string="Type de machine" name="group_by_type" context="{'group_by': 'type_machine_id'}"/>
                     <filter string="Marque" name="group_by_marque" context="{'group_by': 'marque'}"/>
                 </group>
             </search>
@@ -150,7 +150,7 @@
                 <field name="modele"/>
                 <field name="numero_serie"/>
                 <field name="numero_parc"/>
-                <field name="type_machine"/>
+                <field name="type_machine_id"/>
                 <field name="image_128"/>
                 <templates>
                     <t t-name="kanban-box">

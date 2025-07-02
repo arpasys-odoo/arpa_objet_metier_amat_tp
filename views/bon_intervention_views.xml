@@ -36,7 +36,6 @@
                             <field name="lieu_intervention"/>
                             <field name="date_panne"/>
                             <field name="date_fin_reparation"/>
-                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                     </group>
                     <notebook>
@@ -116,7 +115,7 @@
                 <field name="technician_id"/>
                 <field name="state"/>
                 <field name="total_heure" sum="Total des heures"/>
-                <field name="company_id" groups="base.group_multi_company"/>
+                
             </tree>
         </field>
     </record>
@@ -148,7 +147,7 @@
                     <filter string="Technicien" name="group_technician" context="{'group_by': 'technician_id'}"/>
                     <filter string="État" name="group_state" context="{'group_by': 'state'}"/>
                     <filter string="Mois d'intervention" name="group_month" context="{'group_by': 'date_intervention:month'}"/>
-                    <filter string="Société" name="company_id" context="{'group_by':'company_id'}" groups="base.group_multi_company"/>
+                    
                 </group>
             </search>
         </field>

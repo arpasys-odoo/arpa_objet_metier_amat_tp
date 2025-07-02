@@ -51,8 +51,7 @@ class BonIntervention(models.Model):
     signature_date = fields.Datetime(string='Date de signature')
     notes = fields.Text(string='Notes internes')
 
-    company_id = fields.Many2one('res.company', string='Société', required=True,
-                                 default=lambda self: self.env.company)
+    
 
     @api.depends('duration', 'heures')
     def _compute_total_heure(self):

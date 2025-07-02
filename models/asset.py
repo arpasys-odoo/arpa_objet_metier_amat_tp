@@ -4,7 +4,7 @@ from odoo.exceptions import ValidationError
 
 class AmAsset(models.Model):
     _name = 'am.asset'
-    _description = "Machine de BTP"
+    _description = "Machine"
     _inherit = ['mail.thread', 'mail.activity.mixin']
     _order = 'name, numero_parc'
 
@@ -19,21 +19,9 @@ class AmAsset(models.Model):
 
     # Propriétaire et Société
     partner_id = fields.Many2one('res.partner', string="Client Propriétaire", required=True, tracking=True, index=True)
-    company_id = fields.Many2one('res.company', string="Société", required=True, default=lambda self: self.env.company)
 
     # --- Classification & Spécifications ---
-    type_machine = fields.Selection([
-        ('pelle', 'Pelle'),
-        ('chargeuse', 'Chargeuse'),
-        ('bouteur', 'Bouteur (Bulldozer)'),
-        ('niveleuse', 'Niveleuse'),
-        ('compacteur', 'Compacteur'),
-        ('tombereau', 'Tombereau / Dumper'),
-        ('nacelle', 'Nacelle élévatrice'),
-        ('grue', 'Grue'),
-        ('chariot', 'Chariot élévateur'),
-        ('autre', 'Autre')
-    ], string="Type de machine", required=True, tracking=True)
+    type_machine_id = fields.Many2one('am.machine.type', string="Type de machine", required=True, tracking=True)
 
     marque = fields.Char(string="Marque", required=True, tracking=True, help="Ex: Caterpillar, Volvo, Komatsu...")
     modele = fields.Char(string="Modèle", required=True, tracking=True, help="Ex: 320, 966M, D6T...")
