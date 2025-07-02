@@ -22,11 +22,11 @@ Fonctionnalités:
     'depends': [
         'base',
         'mail',
-        'account',
-        'maintenance',
-        'sale',
+        'contacts',  # Mettre contacts avant account
         'product',
-        'contacts',
+        'sale',      # Sale avant account aussi
+        'account',   # Account après pour s'assurer que ses vues sont chargées avant les nôtres
+        'maintenance',
     ],
     'data': [
         # Sécurité d'abord
